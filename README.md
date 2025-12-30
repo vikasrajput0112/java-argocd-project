@@ -1,0 +1,1 @@
+# java-argocd-project
