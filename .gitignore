@@ -1,0 +1,10 @@
+# Maven build output
+java-app/target/
+
+# Compiled files
+*.class
+*.jar
+
+# Logs
+*.log
+
