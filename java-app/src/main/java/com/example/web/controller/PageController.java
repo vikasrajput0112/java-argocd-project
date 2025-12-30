@@ -11,13 +11,17 @@ public class PageController {
         return "Hello, this is HOME page";
     }
 
+    
     @GetMapping("/about")
     public String about() {
         return "This is ABOUT page";
     }
 
+
+
     @GetMapping("/contact")
     public String contact() {
-        return "This is CONTACT page";
+    return "This is the contact page and you can connect at 8588037474";
     }
+   
 }
