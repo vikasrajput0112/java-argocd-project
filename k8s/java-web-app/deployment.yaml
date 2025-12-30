@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-web-app
+  labels:
+    app: java-web-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: java-web-app
+  template:
+    metadata:
+      labels:
+        app: java-web-app
+    spec:
+      containers:
+        - name: java-web-app
+          image: vikas0112/java-web-app:1.0
+          ports:
+            - containerPort: 8089
+

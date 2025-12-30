@@ -1,9 +1,6 @@
-# Maven
+# Maven build output
 java-app/target/
 
 # Logs
 *.log
-
-# OS files
-.DS_Store
 
