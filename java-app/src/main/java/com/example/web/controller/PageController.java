@@ -1,0 +1,23 @@
+package com.example.web.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class PageController {
+
+    @GetMapping("/")
+    public String home() {
+        return "Hello, this is HOME page";
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "This is ABOUT page";
+    }
+
+    @GetMapping("/contact")
+    public String contact() {
+        return "This is CONTACT page";
+    }
+}
