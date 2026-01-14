@@ -19,11 +19,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+                    def IMAGE_TAG = "build-${env.BUILD_NUMBER}"
                     sh """
                         cd java-app
                         docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                     """
+                    env.IMAGE_TAG = IMAGE_TAG
                 }
             }
         }
@@ -48,13 +49,11 @@ pipeline {
                 sh """
                     echo "Keeping ONLY latest 5 Docker images for ${IMAGE_NAME}"
 
-                    docker images ${IMAGE_NAME} \
-                      --format "{{.CreatedAt}} {{.Repository}}:{{.Tag}}" \
-                    | sort -r \
-                    | awk 'NR>5 {print \$2}' \
+                    docker images ${IMAGE_NAME} --format "{{.Repository}}:{{.Tag}}" \
+                    | tail -n +6 \
                     | xargs -r docker rmi -f
 
-                    echo "Docker image cleanup completed"
+                    echo "Cleanup completed"
                 """
             }
         }
