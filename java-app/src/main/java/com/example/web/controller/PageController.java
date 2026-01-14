@@ -21,7 +21,7 @@ public class PageController {
 
     @GetMapping("/contact")
     public String contact() {
-    return "This is the contact page and you can connect at 85880";
+    return "This is the contact page and you can connect at 858803747412";
     }
    
 }
