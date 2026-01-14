@@ -57,6 +57,19 @@ pipeline {
                 """
             }
         }
+        stage('Cleanup Dangling Docker Images') {
+    steps {
+        sh '''
+            echo "Removing dangling Docker images (<none>)"
+
+            docker images -f "dangling=true" -q \
+            | xargs -r docker rmi -f
+
+            echo "Dangling image cleanup completed"
+        '''
+    }
+}
+
 
         stage('Update Kubernetes Manifest') {
             steps {
