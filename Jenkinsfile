@@ -50,7 +50,7 @@ pipeline {
                     echo "Keeping ONLY latest 5 Docker images for ${IMAGE_NAME}"
 
                     docker images ${IMAGE_NAME} --format "{{.Repository}}:{{.Tag}}" \
-                    | tail -n +6 \
+                    | tail -n +3 \
                     | xargs -r docker rmi -f
 
                     echo "Cleanup completed"
