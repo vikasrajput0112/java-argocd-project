@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME  = "vikas0112/java-web-app"
+        IMAGE_NAME   = "vikas0112/java-web-app"
         DOCKER_CREDS = "dockerhub-creds"
         GIT_CREDS    = "github-jenkins"
         GIT_REPO     = "https://github.com/vikasrajput0112/java-argocd-project.git"
@@ -43,18 +43,18 @@ pipeline {
             }
         }
 
-        stage('Cleanup Old Local Docker Images (Keep Last 4)') {
+        stage('Cleanup Docker Images (Keep ONLY Latest 4)') {
             steps {
                 sh """
-                    echo "Cleaning old local Docker images..."
+                    echo "Keeping ONLY latest 4 images for ${IMAGE_NAME}"
 
-                    docker images ${IMAGE_NAME} --format "{{.Repository}}:{{.Tag}} {{.CreatedAt}}" \
-                    | sort -rk2 \
-                    | tail -n +5 \
-                    | awk '{print \$1}' \
+                    docker images ${IMAGE_NAME} \
+                      --format "{{.CreatedAt}} {{.Repository}}:{{.Tag}}" \
+                    | sort -r \
+                    | awk 'NR>4 {print \$2}' \
                     | xargs -r docker rmi -f
 
-                    echo "Cleanup completed."
+                    echo "Image cleanup done"
                 """
             }
         }
