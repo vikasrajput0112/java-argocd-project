@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: java-web-app
-          image: vikas0112/java-web-app:build-27
+          image: vikas0112/java-web-app:build-28
           ports:
             - containerPort: 8089
 
