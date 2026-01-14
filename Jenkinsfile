@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "vikas0112/java-web-app"
+        IMAGE_NAME  = "vikas0112/java-web-app"
         DOCKER_CREDS = "dockerhub-creds"
-        GIT_CREDS = "github-jenkins"
-        GIT_REPO = "https://github.com/vikasrajput0112/java-argocd-project.git"
+        GIT_CREDS    = "github-jenkins"
+        GIT_REPO     = "https://github.com/vikasrajput0112/java-argocd-project.git"
     }
 
     stages {
@@ -43,6 +43,22 @@ pipeline {
             }
         }
 
+        stage('Cleanup Old Local Docker Images (Keep Last 4)') {
+            steps {
+                sh """
+                    echo "Cleaning old local Docker images..."
+
+                    docker images ${IMAGE_NAME} --format "{{.Repository}}:{{.Tag}} {{.CreatedAt}}" \
+                    | sort -rk2 \
+                    | tail -n +5 \
+                    | awk '{print \$1}' \
+                    | xargs -r docker rmi -f
+
+                    echo "Cleanup completed."
+                """
+            }
+        }
+
         stage('Update Kubernetes Manifest') {
             steps {
                 sh """
@@ -77,4 +93,3 @@ pipeline {
         }
     }
 }
-
