@@ -1,12 +1,11 @@
-
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "vikas0112/java-web-app"
+        IMAGE_NAME   = "vikas0112/java-web-app"
         DOCKER_CREDS = "dockerhub-creds"
-        GIT_CREDS = "github-jenkins"
-        GIT_REPO = "https://github.com/vikasrajput0112/java-argocd-project.git"
+        GIT_CREDS    = "github-jenkins"
+        GIT_REPO     = "https://github.com/vikasrajput0112/java-argocd-project.git"
     }
 
     stages {
@@ -41,6 +40,22 @@ pipeline {
                         docker push ${IMAGE_NAME}:${IMAGE_TAG}
                     """
                 }
+            }
+        }
+
+        stage('Cleanup Docker Images (Keep ONLY Latest 5)') {
+            steps {
+                sh """
+                    echo "Keeping ONLY latest 5 Docker images for ${IMAGE_NAME}"
+
+                    docker images ${IMAGE_NAME} \
+                      --format "{{.CreatedAt}} {{.Repository}}:{{.Tag}}" \
+                    | sort -r \
+                    | awk 'NR>5 {print \$2}' \
+                    | xargs -r docker rmi -f
+
+                    echo "Docker image cleanup completed"
+                """
             }
         }
 
