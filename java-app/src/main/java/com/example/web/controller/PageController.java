@@ -8,7 +8,7 @@ public class PageController {
 
     @GetMapping("/")
     public String home() {
-        return "Hello, this is HomE... page, on date 14 jan 2026";
+        return "Hello, this is HomE... page, ONN date 14 jan 2026";
     }
 
     
